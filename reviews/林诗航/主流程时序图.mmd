@@ -1,0 +1,20 @@
+sequenceDiagram
+actor U as 使用者
+participant W as 页面
+participant A as 准入服务
+participant R as 检查服务
+participant V as 视觉指导
+U->>W: 核验并开始
+W->>A: 核对身份和培训
+alt 资格不足或未知
+A-->>W: 锁定及原因
+else 资格有效
+A-->>W: 检查会话
+opt 新手触发关键步骤或用户主动请求
+W->>V: 会话、检查项
+V-->>W: 可见疑点或无法判断
+end
+W->>R: 提交人工确认
+R->>A: 重核当前资格
+R-->>W: 按最新设备状态返回结果
+end
