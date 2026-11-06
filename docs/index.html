@@ -23,7 +23,7 @@ function log(status,reason){history.unshift({mode:modes[s.mode][0],status:status
 function permitted(){return s.face&&modes[s.mode][1]}
 function enough(){return permitted()&&s.device==='idle'&&s.clear&&(modes[s.mode][3]==='offline'?s.review:!s.notice||s.confirmed)}
 function title(t,p){return '<h2>'+t+'</h2>'+(p?'<p class="mini">'+p+'</p>':'')}
-function agent(){return '<details class="agent"><summary>问 LabMate：为什么要检查打印区？</summary><p>这一项由你在现场确认。视觉提醒只能指出画面里的疑点，不能替你确认遮挡处，也不能改变检查结果。</p><p class="mini">依据：原型示例清单 R01 · 打印区确认（正式规则待协会审核）</p></details>'}
+function agent(){return '<details class="agent"><summary>问 LabMate：为什么要检查打印区？</summary><p>请到设备前查看打印区域，尤其是画面遮挡的位置。确认后勾选这项。</p><p class="mini">依据：原型示例清单 R01 · 打印区确认（正式规则待协会审核）</p></details>'}
 function render(){
  q('roles').innerHTML=Object.keys(modes).map(function(key){return '<button type="button" data-mode="'+key+'" aria-pressed="'+(s.mode===key)+'">'+modes[key][0]+'</button>'}).join('');
  q('view').textContent=s.view==='user'?'管理端':'用户端';
@@ -32,7 +32,7 @@ function render(){
  var m=modes[s.mode], page='';
  if(s.view==='admin'){
   if(s.detail!==null){var r=history[s.detail]; page=title(r.id+' · 检查详情','H2D-01 · '+r.mode+' · 模拟记录')+block(r.status,r.reason)+button('back','返回记录',false,false)}
-  else{page=title('上机记录','查看会话结果和阻断原因。管理端演示入口不代表生产权限。')+(history.length?'<div class="stack">'+history.map(function(r,i){return '<button type="button" class="log" data-record="'+i+'"><span><b>'+r.id+'</b><br><small>'+r.mode+'</small></span>'+badge(r.status,r.status==='检查通过'?'green':'warn')+'</button>'}).join('')+'</div>':block('暂无记录','完成或阻断一次演示流程后，记录会显示在这里。'))}
+  else{page=title('上机记录','查看模拟检查记录和处理原因。')+(history.length?'<div class="stack">'+history.map(function(r,i){return '<button type="button" class="log" data-record="'+i+'"><span><b>'+r.id+'</b><br><small>'+r.mode+'</small></span>'+badge(r.status,r.status==='检查通过'?'green':'warn')+'</button>'}).join('')+'</div>':block('暂无记录','完成或阻断一次演示流程后，记录会显示在这里。'))}
  }else if(s.step===0){
   page=title('先核验身份','本页只模拟核验结果，不会打开摄像头或收集人脸。')+block('使用入口已锁定','核验身份后，系统还要检查 H2D 的培训资格。','warn')+'<div class="actions">'+button('face','模拟核验成功',true,false)+button('fail','模拟核验失败',false,false)+'</div>';
  }else if(s.step===1){
@@ -42,7 +42,7 @@ function render(){
  }else if(s.step===2){
   page=title('开打前检查','设备状态和现场检查都需要确认。以下条件仅为原型规则。');
   page+='<div class="row"><div><strong>设备状态</strong><div class="mini">H2D 状态接口 · 模拟数据</div></div><label>演示状态 <select id="device"><option value="idle"'+(s.device==='idle'?' selected':'')+'>空闲</option><option value="busy"'+(s.device==='busy'?' selected':'')+'>已有任务</option><option value="unknown"'+(s.device==='unknown'?' selected':'')+'>状态未知</option></select></label></div>';
-  if(s.device!=='idle')page+=block('暂不能提交检查',s.device==='busy'?'设备已有任务，请稍后重新确认。':'无法确认设备状态，请重试读取或联系协会管理员。','warn');
+  if(s.device!=='idle')page+=block('请先确认设备状态',s.device==='busy'?'设备已有任务，请稍后重新确认。':'设备状态未知。请刷新，或联系协会管理员。','warn');
   if(m[3]==='offline'){
    page+=block('摄像头不可用',s.review?'协会管理员已完成现场复核（模拟）。视觉结果仍为不可用。':'请联系协会管理员现场复核。这里不会显示视觉通过。','warn');
    if(!s.review)page+=button('review','模拟管理员完成现场复核',false,false);
