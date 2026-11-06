@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>LabMate · 拓竹 H2D 使用准入</title>
+<style>
+:root{--bg:#f3f4f7;--ink:#1b2232;--sub:#556176;--blue:#1458c2;--soft:#e9f1ff;--line:#e1e5ec;--amber:#855108;--round:24px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif}button,select{font:inherit}button{min-height:44px;border:0;border-radius:22px;padding:10px 16px;cursor:pointer;font-weight:650;background:var(--soft);color:var(--blue)}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #72a5ff;outline-offset:3px}button:disabled{color:#667388;background:#edf0f5;cursor:not-allowed}button.primary:not(:disabled){color:white;background:var(--blue)}button.ghost{background:transparent;color:var(--blue)}a{color:var(--blue)}.bar{border-bottom:1px solid var(--line);background:#fff}.bar>div{max-width:1090px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800;letter-spacing:-.03em}.brand i{font-style:normal;display:grid;place-items:center;width:35px;height:35px;background:var(--blue);color:#fff;border-radius:12px;font-size:19px}.chip{display:inline-flex;padding:4px 9px;border-radius:999px;background:#edf0f4;color:#48576d;font-size:12px;font-weight:700;white-space:nowrap}.chip.green{background:#e1f3e9;color:#17613b}.chip.warn{background:#fff0d4;color:#805307}.layout{max-width:1090px;margin:24px auto;padding:0 20px;display:grid;grid-template-columns:275px 1fr;gap:18px;align-items:start}.card{background:#fff;border-radius:var(--round);padding:20px;border:1px solid var(--line)}.stack{display:grid;gap:12px}.mini{color:var(--sub);font-size:13px}.eyebrow{color:var(--blue);font-weight:750;letter-spacing:.05em;font-size:12px}.side h2,.page h2{margin:4px 0 6px;font-size:19px}.side p,.page p{margin:5px 0 10px}.roles{display:grid;gap:5px;margin-top:10px}.roles button{background:#f4f6f9;color:#39485d;text-align:left;border-radius:14px}.roles button[aria-pressed=true]{background:var(--soft);color:var(--blue)}.hero{display:grid;grid-template-columns:1fr 150px;gap:14px;align-items:center;background:#e8f0fb;border:1px solid #dce6f4;padding:23px;border-radius:var(--round)}h1{margin:5px 0 6px;font-size:clamp(25px,5vw,37px);line-height:1.2;letter-spacing:-.035em}.hero p{margin:0}.machine{width:100%;height:105px;max-height:18vw}.steps{display:flex;gap:6px;flex-wrap:wrap}.steps span{background:#e9ecf2;color:#4d5b70;border-radius:14px;padding:6px 10px;font-size:12px;font-weight:650}.steps [aria-current=step]{background:var(--blue);color:#fff}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.callout{padding:14px;border-radius:16px;background:#eff4fb;margin:9px 0}.callout.warn{background:#fff2da;color:#66420d}.callout.good{background:#e6f5ec;color:#195339}.label{display:flex;align-items:start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}input{width:18px;height:18px;accent-color:var(--blue);flex:none}select{background:#f5f7fa;border:1px solid #cfd7e4;border-radius:10px;color:var(--ink);padding:7px 10px}.scan{background:#152e43;color:#f1f7fc;border-radius:17px;padding:14px;position:relative;display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:center}.scan svg{width:128px;height:78px}.log{width:100%;padding:12px 14px;display:flex;text-align:left;align-items:center;justify-content:space-between;border-radius:15px;background:#f2f5fa;color:var(--ink);gap:8px}.agent{margin-top:11px;border-top:1px solid var(--line);padding-top:10px}.agent summary{cursor:pointer;color:var(--blue);font-weight:700}footer{max-width:1090px;margin:0 auto 24px;padding:0 20px;color:var(--sub);font-size:12px}@media(max-width:740px){.layout{grid-template-columns:1fr;margin:12px auto;padding:0 12px;gap:12px}.bar>div{padding:8px 12px}.roles{grid-template-columns:1fr 1fr}.card,.hero{padding:15px}.hero{grid-template-columns:1fr 90px}.steps span{padding:5px 7px}.scan{grid-template-columns:95px 1fr}.scan svg{width:95px}.brand{font-size:17px}}
+</style></head><body>
+<header class="bar"><div><span class="brand"><i aria-hidden="true">✓</i> LabMate</span><span class="chip">课程原型 · 全部模拟</span><button type="button" id="view" class="ghost">管理端</button></div></header>
+<main class="layout"><aside class="card side" aria-label="演示场景"><div class="eyebrow">演示控制台</div><h2>选择一个场景</h2><p class="mini">切换场景会重开当前检查。</p><div class="roles" id="roles"></div></aside>
+<div class="stack"><div class="hero"><div><div class="eyebrow">创客中心 / 设备 01</div><h1>拓竹 H2D</h1><p>确认使用资格，完成开打前检查。</p></div>
+<svg viewBox="0 0 152 112" class="machine" role="img" aria-label="3D 打印机示意图"><rect x="34" y="7" width="86" height="94" rx="12" fill="#26486a"/><rect x="44" y="20" width="66" height="67" rx="6" fill="#eff5fb"/><path d="M51 32h53M78 32v19m-7-4 7 8 7-8M53 74h49" fill="none" stroke="#4c79ab" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="89" y="11" width="21" height="5" rx="2" fill="#abc9ff"/><path d="M31 103h92" stroke="#91aaca" stroke-width="3" stroke-linecap="round"/></svg></div>
+<nav id="steps" class="steps" aria-label="上机进度"></nav><section class="card page" id="page" aria-live="polite"></section></div></main>
+<footer>所有身份、设备状态和视觉结果均为预置演示。页面不启动、不停机，也不锁定打印机面板。</footer>
+<script>
+(function(){
+var modes={novice:['新手 · 已培训',true,true,'online'],untrained:['新手 · 未培训',false,true,'online'],experienced:['熟练 · 已培训',true,false,'online'],offline:['新手 · 摄像头不可用',true,true,'offline']};
+var names=['身份核验','培训资格','开打前检查','检查结果'];
+var history=[],s;
+var q=function(id){return document.getElementById(id)};
+var button=function(id,caption,primary,disabled){return '<button type="button" id="'+id+'" class="'+(primary?'primary':'')+'"'+(disabled?' disabled':'')+'>'+caption+'</button>'};
+var badge=function(text,cls){return '<span class="chip '+(cls||'')+'">'+text+'</span>'};
+var block=function(title,body,cls){return '<div class="callout '+(cls||'')+'"><strong>'+title+'</strong><p>'+body+'</p></div>'};
+function reset(mode){s={mode:mode||'novice',view:'user',step:0,face:false,device:'idle',clear:false,notice:false,confirmed:false,review:false,detail:null,finished:false};render()}
+function log(status,reason){history.unshift({mode:modes[s.mode][0],status:status,reason:reason,id:'LM-'+String(history.length+1).padStart(3,'0')})}
+function permitted(){return s.face&&modes[s.mode][1]}
+function enough(){return permitted()&&s.device==='idle'&&s.clear&&(modes[s.mode][3]==='offline'?s.review:!s.notice||s.confirmed)}
+function title(t,p){return '<h2>'+t+'</h2>'+(p?'<p class="mini">'+p+'</p>':'')}
+function agent(){return '<details class="agent"><summary>问 LabMate：为什么要检查打印区？</summary><p>这一项由你在现场确认。视觉提醒只能指出画面里的疑点，不能替你确认遮挡处，也不能改变检查结果。</p><p class="mini">依据：原型示例清单 R01 · 打印区确认（正式规则待协会审核）</p></details>'}
+function render(){
+ q('roles').innerHTML=Object.keys(modes).map(function(key){return '<button type="button" data-mode="'+key+'" aria-pressed="'+(s.mode===key)+'">'+modes[key][0]+'</button>'}).join('');
+ q('view').textContent=s.view==='user'?'管理端':'用户端';
+ q('steps').hidden=s.view==='admin'; q('steps').style.display=s.view==='admin'?'none':'flex';
+ q('steps').innerHTML=names.map(function(name,i){return '<span'+(s.step===i?' aria-current="step"':'')+'>'+(i+1)+' '+name+'</span>'}).join('');
+ var m=modes[s.mode], page='';
+ if(s.view==='admin'){
+  if(s.detail!==null){var r=history[s.detail]; page=title(r.id+' · 检查详情','H2D-01 · '+r.mode+' · 模拟记录')+block(r.status,r.reason)+button('back','返回记录',false,false)}
+  else{page=title('上机记录','查看会话结果和阻断原因。管理端演示入口不代表生产权限。')+(history.length?'<div class="stack">'+history.map(function(r,i){return '<button type="button" class="log" data-record="'+i+'"><span><b>'+r.id+'</b><br><small>'+r.mode+'</small></span>'+badge(r.status,r.status==='检查通过'?'green':'warn')+'</button>'}).join('')+'</div>':block('暂无记录','完成或阻断一次演示流程后，记录会显示在这里。'))}
+ }else if(s.step===0){
+  page=title('先核验身份','本页只模拟核验结果，不会打开摄像头或收集人脸。')+block('使用入口已锁定','核验身份后，系统还要检查 H2D 的培训资格。','warn')+'<div class="actions">'+button('face','模拟核验成功',true,false)+button('fail','模拟核验失败',false,false)+'</div>';
+ }else if(s.step===1){
+  page=title('培训资格',s.face?'身份核验已通过 · 模拟':'身份核验未通过 · 模拟');
+  if(permitted()) page+=block('H2D 培训已通过',m[2]?'首次上机会在打印区检查时提供视觉提醒。':'熟练使用者默认不主动取帧，仍须完成必要检查。','good')+button('preflight','进入开打前检查',true,false);
+  else page+=block('使用入口仍锁定',s.face?'尚未通过 H2D 培训考核。请先向协会申请学习与考核。':'暂时无法确认身份，请重试或联系协会管理员。','warn')+'<div class="actions">'+button('preflight','进入开打前检查',true,true)+button('retry',s.face?'查看学习指引':'重试身份核验',false,false)+'</div>';
+ }else if(s.step===2){
+  page=title('开打前检查','设备状态和现场检查都需要确认。以下条件仅为原型规则。');
+  page+='<div class="row"><div><strong>设备状态</strong><div class="mini">H2D 状态接口 · 模拟数据</div></div><label>演示状态 <select id="device"><option value="idle"'+(s.device==='idle'?' selected':'')+'>空闲</option><option value="busy"'+(s.device==='busy'?' selected':'')+'>已有任务</option><option value="unknown"'+(s.device==='unknown'?' selected':'')+'>状态未知</option></select></label></div>';
+  if(s.device!=='idle')page+=block('暂不能提交检查',s.device==='busy'?'设备已有任务，请稍后重新确认。':'无法确认设备状态，请重试读取或联系协会管理员。','warn');
+  if(m[3]==='offline'){
+   page+=block('摄像头不可用',s.review?'协会管理员已完成现场复核（模拟）。视觉结果仍为不可用。':'请联系协会管理员现场复核。这里不会显示视觉通过。','warn');
+   if(!s.review)page+=button('review','模拟管理员完成现场复核',false,false);
+  }else if(s.notice){
+   page+='<div class="scan"><svg viewBox="0 0 130 80" role="img" aria-label="模拟打印平台及高亮疑点"><rect x="10" y="8" width="110" height="64" rx="6" fill="#41627d"/><path d="M20 55h90M20 44h90M20 33h90M35 20v42M55 20v42M75 20v42M95 20v42" stroke="#83a2ba"/><rect x="78" y="45" width="25" height="17" rx="3" fill="#dca144" stroke="#ffdb92" stroke-width="2"/></svg><div><b>设备画面示意</b><br><small>'+(m[2]?'关键步骤模拟采样 · 新手多帧':'按需取帧 · 熟练单次')+'</small></div></div>';
+   page+=block('视觉提醒：平台边缘疑似有遗留物','请先查看标注区域，按现场规程确认后再继续。此提醒不表示其他区域已检查。','warn')+'<label class="label"><input id="confirmed" type="checkbox"'+(s.confirmed?' checked':'')+'>我已现场复核提示区域</label>';
+  }else page+='<div class="actions">'+button('vision',m[2]?'查看新手视觉提示':'按需查看视觉提示',false,false)+'</div>';
+  page+='<label class="label"><input id="clear" type="checkbox"'+(s.clear?' checked':'')+'>我已按现场规程确认打印区无遗留物</label>'+agent()+'<div class="actions">'+button('submit','提交检查',true,!enough())+'</div>';
+ }else{
+  page=title('检查完成','记录已保存到本次原型演示。')+block('检查通过','按协会现场流程继续。此结果没有向打印机发送任何启动指令。','good')+'<div class="actions">'+button('again','重新演示',true,false)+button('history','查看管理端记录',false,false)+'</div>';
+ }
+ q('page').innerHTML=page;
+ var bind=function(id,fn,event){if(q(id))q(id).addEventListener(event||'click',fn)};
+ q('roles').querySelectorAll('[data-mode]').forEach(function(el){el.onclick=function(){reset(el.dataset.mode)}});
+ q('view').onclick=function(){s.view=s.view==='user'?'admin':'user';s.detail=null;render()};
+ q('page').querySelectorAll('[data-record]').forEach(function(el){el.onclick=function(){s.detail=Number(el.dataset.record);render()}});
+ bind('back',function(){s.detail=null;render()});
+ bind('face',function(){s.face=true;s.step=1;if(!permitted())log('入口锁定','未通过 H2D 培训考核。');render()});
+ bind('fail',function(){s.face=false;s.step=1;log('入口锁定','身份核验未通过。');render()});
+ bind('retry',function(){if(!s.face){s.step=0;render()}else{q('page').insertAdjacentHTML('beforeend',block('学习与考核','请联系协会管理人员参加 H2D 培训。演示页面不签发培训资格。'))}});
+ bind('preflight',function(){if(!permitted())return;s.step=2;s.notice=m[2]&&m[3]==='online';render()});
+ bind('vision',function(){s.notice=true;s.confirmed=false;render()});
+ bind('review',function(){s.review=true;render()});
+ bind('device',function(e){s.device=e.target.value;render();q('device').focus()},'change');
+ bind('clear',function(e){s.clear=e.target.checked;q('submit').disabled=!enough()},'change');
+ bind('confirmed',function(e){s.confirmed=e.target.checked;q('submit').disabled=!enough()},'change');
+ bind('submit',function(){if(!enough()||s.finished)return;s.finished=true;log('检查通过',m[3]==='offline'?'设备空闲；打印区现场确认；视觉不可用，由管理员现场复核。':s.notice?'设备空闲；已按现场规程确认打印区并复核视觉疑点。':'设备空闲；已按现场规程确认打印区，未启用视觉辅助。');s.step=3;render()});
+ bind('again',function(){reset(s.mode)});bind('history',function(){s.view='admin';render()});
+}
+reset();
+}());
+</script></body></html>
