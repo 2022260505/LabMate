@@ -11,10 +11,12 @@ erDiagram
     DEVICE ||--o{ TRAINING_RESULT : qualifies_for
     USER_ACCOUNT ||--o{ CHECK_SESSION : starts
     DEVICE ||--o{ CHECK_SESSION : used_in
+    TRAINING_RESULT o|--o{ CHECK_SESSION : supports
     CHECK_SESSION ||--o{ CHECK_ITEM_RESULT : includes
     CHECK_SESSION ||--o{ DEVICE_SNAPSHOT : observes
     CHECK_SESSION ||--o{ GUIDANCE_EVENT : receives
     CHECK_SESSION ||--o{ AUDIT_EVENT : records
+    USER_ACCOUNT ||--o{ AUDIT_EVENT : performs
     DEVICE ||--o{ KNOWLEDGE_ENTRY : documents
     KNOWLEDGE_ENTRY o|--o{ GUIDANCE_EVENT : cited_by
 ```
@@ -34,7 +36,7 @@ erDiagram
 | AuditEvent / audit_event | id PK；session_id FK；actor_id FK；action；reason_code；created_at；note 可空。 |
 
 ## 4 数据读写与一致性
-准入时按用户、设备、当前培训版本查询最近一次考核结果，并核对是否通过、过期或撤销；不回退到更早的通过记录；当前结果被撤销或过期后，提交时必须重新判定。进入检查时快照清单版本。状态适配器写入设备快照，规则读取同会话中来源匹配且最新的有效快照；演示数据和真实数据隔离，状态不可用写明原因。
+准入时按用户、设备、当前培训版本查询最近一次考核结果，并核对是否通过、过期或撤销；不回退到更早的通过记录；当前结果被撤销或过期后，提交时必须重新判定。进入检查时记录清单版本及对应考核；关联的考核记录须属于同一用户、设备和培训版本。状态适配器写入设备快照，规则读取同会话中来源匹配且最新的有效快照；演示数据和真实数据隔离，状态不可用写明原因。
 最终提交锁定会话记录、核对身份和资格有效期、检查项及设备状态，在单个事务内写入最终状态和审计事件。提交键重复时返回已保存结果。现场复核以审计事件记录操作人、关联会话和原因，不直接改写培训记录或设备状态。
 建议索引：training_result(user_id,device_id,version,assessed_at)，check_session(device_id,created_at)，device_snapshot(session_id,observed_at)，guidance_event(session_id,created_at)。会话明细可从外键查回；后台列表按时间分页。
 
