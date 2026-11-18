@@ -13,13 +13,31 @@
 (function(){
 var modes={novice:['新手 · 已培训',true,true,'online'],untrained:['新手 · 未培训',false,true,'online'],experienced:['熟练 · 已培训',true,false,'online'],offline:['新手 · 摄像头不可用',true,true,'offline']};
 var names=['身份核验','培训资格','开打前检查','检查结果'];
-var history=[],s;
+var storageKey='labmate-demo-history-v1', s;
+function readHistory(){
+ try {
+  var records=JSON.parse(localStorage.getItem(storageKey));
+  return Array.isArray(records)?records.filter(function(r){
+   return r&&/^LM-\d+$/.test(r.id)&&Object.values(modes).some(function(m){return m[0]===r.mode})
+    && typeof r.reason==='string'&&['入口锁定','检查通过'].includes(r.status);
+  }):[];
+ } catch(e){return []}
+}
+var history=readHistory();
+function persistHistory(){
+ try {localStorage.setItem(storageKey,JSON.stringify(history))} catch(e){}
+}
+function safeText(value){
+ var span=document.createElement('span');
+ span.textContent=value;
+ return span.innerHTML;
+}
 var q=function(id){return document.getElementById(id)};
 var button=function(id,caption,primary,disabled){return '<button type="button" id="'+id+'" class="'+(primary?'primary':'')+'"'+(disabled?' disabled':'')+'>'+caption+'</button>'};
 var badge=function(text,cls){return '<span class="chip '+(cls||'')+'">'+text+'</span>'};
 var block=function(title,body,cls){return '<div class="callout '+(cls||'')+'"><strong>'+title+'</strong><p>'+body+'</p></div>'};
 function reset(mode){s={mode:mode||'novice',view:'user',step:0,face:false,device:'idle',clear:false,notice:false,confirmed:false,review:false,detail:null,finished:false};render()}
-function log(status,reason){history.unshift({mode:modes[s.mode][0],status:status,reason:reason,id:'LM-'+String(history.length+1).padStart(3,'0')})}
+function log(status,reason){history.unshift({mode:modes[s.mode][0],status:status,reason:reason,id:'LM-'+String(history.length+1).padStart(3,'0')});persistHistory()}
 function permitted(){return s.face&&modes[s.mode][1]}
 function enough(){return permitted()&&s.device==='idle'&&s.clear&&(modes[s.mode][3]==='offline'?s.review:!s.notice||s.confirmed)}
 function title(t,p){return '<h2>'+t+'</h2>'+(p?'<p class="mini">'+p+'</p>':'')}
@@ -31,8 +49,8 @@ function render(){
  q('steps').innerHTML=names.map(function(name,i){return '<span'+(s.step===i?' aria-current="step"':'')+'>'+(i+1)+' '+name+'</span>'}).join('');
  var m=modes[s.mode], page='';
  if(s.view==='admin'){
-  if(s.detail!==null){var r=history[s.detail]; page=title(r.id+' · 检查详情','H2D-01 · '+r.mode+' · 模拟记录')+block(r.status,r.reason)+button('back','返回记录',false,false)}
-  else{page=title('上机记录','查看模拟检查记录和处理原因。')+(history.length?'<div class="stack">'+history.map(function(r,i){return '<button type="button" class="log" data-record="'+i+'"><span><b>'+r.id+'</b><br><small>'+r.mode+'</small></span>'+badge(r.status,r.status==='检查通过'?'green':'warn')+'</button>'}).join('')+'</div>':block('暂无记录','完成或阻断一次演示流程后，记录会显示在这里。'))}
+  if(s.detail!==null){var r=history[s.detail]; page=title(r.id+' · 检查详情','H2D-01 · '+r.mode+' · 模拟记录')+block(r.status,safeText(r.reason))+button('back','返回记录',false,false)}
+  else{page=title('上机记录','查看保存在此浏览器的模拟记录及处理原因。')+(history.length?'<div class="stack">'+history.map(function(r,i){return '<button type="button" class="log" data-record="'+i+'"><span><b>'+r.id+'</b><br><small>'+r.mode+'</small></span>'+badge(r.status,r.status==='检查通过'?'green':'warn')+'</button>'}).join('')+'</div><div class="actions">'+button('clear-history','清空演示记录',false,false)+'</div>':block('暂无记录','完成或阻断一次演示流程后，记录会显示在这里。'))}
  }else if(s.step===0){
   page=title('先核验身份','本页只模拟核验结果，不会打开摄像头或收集人脸。')+block('使用入口已锁定','核验身份后，系统还要检查 H2D 的培训资格。','warn')+'<div class="actions">'+button('face','模拟核验成功',true,false)+button('fail','模拟核验失败',false,false)+'</div>';
  }else if(s.step===1){
@@ -52,13 +70,17 @@ function render(){
   }else page+='<div class="actions">'+button('vision',m[2]?'查看新手视觉提示':'按需查看视觉提示',false,false)+'</div>';
   page+='<label class="label"><input id="clear" type="checkbox"'+(s.clear?' checked':'')+'>我已按现场规程确认打印区无遗留物</label>'+agent()+'<div class="actions">'+button('submit','提交检查',true,!enough())+'</div>';
  }else{
-  page=title('检查完成','记录已保存到本次原型演示。')+block('检查通过','按协会现场流程继续。此结果没有向打印机发送任何启动指令。','good')+'<div class="actions">'+button('again','重新演示',true,false)+button('history','查看管理端记录',false,false)+'</div>';
+  page=title('检查完成','管理端可查看此次模拟检查的结果和原因。')+block('检查通过','按协会现场流程继续。此结果没有向打印机发送任何启动指令。','good')+'<div class="actions">'+button('again','重新演示',true,false)+button('history','查看管理端记录',false,false)+'</div>';
  }
  q('page').innerHTML=page;
  var bind=function(id,fn,event){if(q(id))q(id).addEventListener(event||'click',fn)};
  q('roles').querySelectorAll('[data-mode]').forEach(function(el){el.onclick=function(){reset(el.dataset.mode)}});
  q('view').onclick=function(){s.view=s.view==='user'?'admin':'user';s.detail=null;render()};
  q('page').querySelectorAll('[data-record]').forEach(function(el){el.onclick=function(){s.detail=Number(el.dataset.record);render()}});
+ bind('clear-history',function(){
+  if(!window.confirm('清除此浏览器中的 LabMate 模拟记录？'))return;
+  history=[];s.detail=null;persistHistory();render();
+ });
  bind('back',function(){s.detail=null;render()});
  bind('face',function(){s.face=true;s.step=1;if(!permitted())log('入口锁定','未通过 H2D 培训考核。');render()});
  bind('fail',function(){s.face=false;s.step=1;log('入口锁定','身份核验未通过。');render()});
